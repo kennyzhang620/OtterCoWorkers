@@ -48,3 +48,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
   return true; // Keep the message channel open for asynchronous sendResponse
 });
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'getDomainTime') {
+      const domain = request.domain;
+      const elapsedTime = domainTimes[domain] || 0;
+      sendResponse({ elapsedTime });
+    }
+    return true; // Keep the message channel open for asynchronous sendResponse
+  });
