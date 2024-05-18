@@ -1,14 +1,19 @@
 {
     "manifest_version": 3,
-    "name": "Show Tab Title & Chrome Time",
-    "version": "1.1",
-    "description": "Displays website domain and estimated Chrome window open time",
+    "name": "Tab Domains Viewer",
+    "version": "1.0",
+    "description": "Displays all domains of currently open tabs in the window and shows how long the window has been open.",
     "permissions": ["tabs"],
     "action": {
-      "default_popup": "popup.html"
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+      }
     },
     "background": {
-      "service_worker": "background.js" // Specify the background script
+      "service_worker": "background.js"
     }
   }
   

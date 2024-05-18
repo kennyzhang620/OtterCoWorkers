@@ -1,20 +1,22 @@
-let startTime = performance.now(); // Capture start time upon loading
-let focusedTabUrls = [];
+let windowOpenTime = Date.now();
 
-
-chrome.tabs.onActivated.addListener(details => {
-    chrome.tabs.get(details.tabId, tab => {
-      focusedTabUrls.push({ url: tab.url, timestamp: performance.now() }); // Store URL and timestamp
-    });
-  });
-
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message === "getChromeTime") {
-    const elapsedTime = (performance.now() - startTime) / 1000; // Time in seconds
-    sendResponse(elapsedTime.toFixed(2)); // Send time with 2 decimal places
-  }
-
+chrome.runtime.onStartup.addListener(() => {
+  windowOpenTime = Date.now();
 });
 
+chrome.runtime.onInstalled.addListener(() => {
+  windowOpenTime = Date.now();
+});
 
+chrome.windows.onCreated.addListener(() => {
+  windowOpenTime = Date.now();
+});
 
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === 'getWindowOpenTime') {
+    const currentTime = Date.now();
+    const elapsedTime = currentTime - windowOpenTime;
+    sendResponse({ elapsedTime });
+  }
+  return true; // Keep the message channel open for asynchronous sendResponse
+});

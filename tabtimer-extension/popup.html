@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Show Tab Title</title>
+  <title>Tab Domains Viewer</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-  <h1>Current Tab Title:</h1>
-  <p id="tabTitle"></p>
-  <hr> <h1>Estimated Chrome Open Time:</h1>
-  <p id="chromeTime"></p>
-  <hr>  <h1>Focused Domain Times</h1>
-  <div id="domainTimes"></div>
-  <script src="popup.js" charset="UTF-8"></script>
-  
+  <h1>Open Tab Domains</h1>
+  <ul id="domain-list"></ul>
+  <h2>Current Active Tab</h2>
+  <p id="active-tab-domain"></p>
+  <h2>Window Open Time</h2>
+  <p id="window-open-time">Loading...</p>
+  <script src="popup.js"></script>
 </body>
 </html>
