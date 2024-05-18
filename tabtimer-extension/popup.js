@@ -43,5 +43,20 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Failed to retrieve window open time.');
       }
     });
+
+    chrome.runtime.sendMessage({ action: 'getActiveDomainTime' }, (response) => {
+        if (response && response.elapsedTime !== undefined) {
+          const elapsedTime = response.elapsedTime;
+          const seconds = Math.floor((elapsedTime / 1000) % 60);
+          const minutes = Math.floor((elapsedTime / (1000 * 60)) % 60);
+          const hours = Math.floor((elapsedTime / (1000 * 60 * 60)) % 24);
+    
+          const timeString = `${hours}h ${minutes}m ${seconds}s`;
+          const activeDomainTimeElem = document.getElementById('active-domain-time');
+          activeDomainTimeElem.textContent = `Domain: ${response.domain}, Time: ${timeString}`;
+        } else {
+          console.error('Failed to retrieve active domain time.');
+        }
+      });
   });
   
