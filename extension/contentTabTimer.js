@@ -4,9 +4,6 @@ let interval=500;
 // Function to retrieve alert threshold from storage and update alertThreshold
 function updateAlertThreshold() {
     chrome.storage.sync.get('alertThreshold', (data) => {
-        if (data.alertThreshold) {
-            alertThreshold = data.alertThreshold * 1000; // Assuming alertThreshold is in seconds
-        }
         console.log("Alert Threshold updated:", alertThreshold);
         chrome.runtime.sendMessage({ action: 'getWindowOpenTime' }, (windowResponse) =>{
             const windowTime = windowResponse.elapsedTime;
