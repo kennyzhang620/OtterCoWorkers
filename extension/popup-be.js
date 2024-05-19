@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Query all tabs in the current window
 // Query all tabs in the current window
 chrome.tabs.query({ currentWindow: true }, (tabs) => {
-    const domainList = document.getElementById('domain-list');
+    const domainList = document.getElementById('data-text');
   
     // Get the total window open time
     chrome.runtime.sendMessage({ action: 'getWindowOpenTime' }, (windowResponse) => {

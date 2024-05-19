@@ -5,7 +5,7 @@ let interval=10000;
 function updateAlertThreshold() {
     chrome.storage.sync.get('alertThreshold', (data) => {
         if (data.alertThreshold) {
-            alertThreshold = data.alertThreshold * 1000; // Assuming alertThreshold is in seconds
+            alertThreshold = data.alertThreshold; // Assuming alertThreshold is in seconds
         }
         console.log("Alert Threshold updated:", alertThreshold);
         chrome.runtime.sendMessage({ action: 'getActiveDomainTime' }, (response) =>{
@@ -13,12 +13,9 @@ function updateAlertThreshold() {
                 const elapsedTime = response.elapsedTime;
                 if(elapsedTime > alertThreshold)
                 {
-                    alert("bing bong motherfker");
+                  //  alert("bing bong motherfker");
+               //   StormyStopBap();
                 }
-            }
-        });
-
-        chrome.runtime.sendMessage({ action: 'Sparky_Talk' }, (response) =>{
             }
         });
     });

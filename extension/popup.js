@@ -40,6 +40,16 @@ document.addEventListener('DOMContentLoaded', function(){
         //chrome.runtime.sendMessage()
         if(switchStatus.checked){
 			document.getElementById("mode-text").innerHTML = "Work";
+			chrome.tabs.query({currentWindow: true, active: true}, 
+				//this function looks at the popup.html "respond to" textbox
+				//grabs the value and sends the message to context.js    
+				function(tabs){
+					
+					chrome.tabs.sendMessage(tabs[0].id, {action: "Sparky_Talk"}, function(res) {
+						console.log(res)
+					});
+					
+				})
 		}
 		else{
 			document.getElementById("mode-text").innerHTML = "Chill";

@@ -16,7 +16,7 @@ const content = document.body
 var s = false
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
    // If the received message has the expected format...
-
+   console.log("-->", msg.action)
    switch (msg.action) {
       case "Sparky_Talk":
          SparkyBlueRunoutTalk();
