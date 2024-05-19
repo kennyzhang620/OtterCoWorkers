@@ -1,16 +1,3 @@
-
-function appendElement(classL, htmlL) {
-    var newNode = document.createRange().createContextualFragment(htmlL);
-    classL.appendChild(newNode);
-}
-
-function clearElements(classL) {
-    while (classL.firstChild) {
-        classL.removeChild(classL.firstChild);
-    }
-
-}
-
 function senddata(emo,txt) {
 	var txtFile = new XMLHttpRequest();
 	    txtFile.open("POST", "http://localhost:5010/chatrecvm");
@@ -44,7 +31,6 @@ function senddata(emo,txt) {
 	    txtFile.send(image_encoded);
 }
 
-
 document.addEventListener('DOMContentLoaded', function(){
     //when the user clicks the submit button in the popup.html
     document.getElementById('button').addEventListener('click', onclick, false)
@@ -57,17 +43,11 @@ document.addEventListener('DOMContentLoaded', function(){
         //this function looks at the popup.html "respond to" textbox
         //grabs the value and sends the message to context.js    
         function(tabs){
-            const text = document.getElementById('respondtext').value
-			const emo = document.getElementById('cars').value;
-			senddata(emo, text);
 			
-          //  chrome.tabs.sendMessage(tabs[0].id, text)
+            chrome.tabs.sendMessage(tabs[0].id, {command: "move"}, function(res) {
+				console.log(res)
+			});
 			
         })
-		
-		chrome.windows.create({
-		    // Just use the full URL if you need to open an external page
-		    url: "http://localhost:5010/"
-		  });
     }
 }, false)
