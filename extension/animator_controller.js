@@ -1,17 +1,59 @@
 initAnimator();
 
 var lockY = -1;
-const content = document.body
-      content.addEventListener("mousewheel", (event) => {
-         const deltaY = event.deltaY;
+window.addEventListener("mousewheel", (event) => {
+   const deltaY = event.deltaY;
 
-         if (lockY == -1)
-            window.scroll(window.scrollX,window.scrollY)
-         else
-            window.scroll(0,lockY)
-         
-         console.log("A", lockY)
-      });
+   if (lockY == -1)
+      window.scroll(window.scrollX,window.scrollY)
+   else
+      window.scroll(0,lockY)
+   
+   console.log("A", lockY)
+});
+
+
+var responseCust = "Well its time to start working!"
+
+function senddata(txt, callback) {
+   var txtFile = new XMLHttpRequest();
+         txtFile.open("POST", "http://localhost:5010/response", true);
+
+         txtFile.setRequestHeader("Accept", "application/json");
+         txtFile.setRequestHeader("Content-Type", "application/json");
+
+         let image_encoded = `{
+         "textString": "${txt}"
+         }`;
+         txtFile.onload = function (e) {
+            if (txtFile.readyState === 4) {
+               if (txtFile.status === 200) {
+                     var csvData = txtFile.responseText;
+
+                     console.log(csvData, "Response");
+               callback(csvData)
+
+               }
+               else {
+                     console.log("error:", txtFile.statusText);
+               }
+            }
+         };
+
+         txtFile.onerror = function (e) {
+            console.log("error: ", txtFile.statusText);
+         };
+
+         txtFile.send(image_encoded);
+}
+
+function cb(data) {
+      responseCust = data
+      console.log(responseCust)
+}
+
+senddata("You are a tsundere. Tell them to get off the computer!", cb)
+
 
 var s = false
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
@@ -19,7 +61,7 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
    console.log("-->", msg.action)
    switch (msg.action) {
       case "Sparky_Talk":
-         SparkyBlueRunoutTalk();
+         SparkyBlueRunoutTalk(responseCust);
          break;
       case "Sparky_Retreat":
          SparkyBlueRunAway();

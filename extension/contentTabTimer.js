@@ -19,7 +19,7 @@ function updateAlertThreshold() {
 
                 if(totalWhiteListPercentage < alertThreshold)
                 {
-                    alert("bing bong back to work motherfker");
+                   // alert("bing bong back to work motherfker");
                     if (!vi) {
                         if (Math.random() > 0.5) {
                             StormyFreezeScroll();

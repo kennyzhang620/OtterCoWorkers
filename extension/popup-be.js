@@ -1,3 +1,39 @@
+const stormymini = document.getElementById('stormy_hs');
+
+function stormypos(x,y) {
+  stormymini.style.top = `${x}px`
+  stormymini.style.left = `${y}px`
+
+}
+
+function animateStormy() {
+    const v = setInterval(animator, 30);
+    var vx = 360; 
+    var vy = 315
+    function animator() {
+        if (vy > 90) {
+          stormypos(vx,vy--);
+        }
+        else {
+          clearInterval(v)
+        }
+    }
+}
+
+function animateStormy2() {
+  const v = setInterval(animator, 30);
+  var vx = 360; 
+  var vy = 90
+  function animator() {
+      if (vy < 360) {
+        stormypos(vx,vy++);
+      }
+      else {
+        clearInterval(v)
+      }
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     
   // Get the window open time
@@ -126,14 +162,25 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
   });
 
-  document.addEventListener('DOMContentLoaded', function(){
+  var cBox = false;
+  
+  window.onload = function(){
     //when the user clicks the submit button in the popup.html
     document.getElementById('mode').addEventListener('click', onclick, false)
-    function onclick(){
 		const switchStatus = document.getElementById('mode');
-        //chrome.runtime.sendMessage()
-        if(switchStatus.checked){
-			document.getElementById("mode-text").innerHTML = "Work";
+    
+	chrome.storage.sync.get('cBox', (data) => {
+		cBox = data.cBox
+    switchStatus.checked = cBox
+    console.log(cBox)
+	});
+
+
+  function toggle() {
+    //chrome.runtime.sendMessage()
+    if(switchStatus.checked){
+			document.getElementById("mode-text").innerHTML = "Work!";
+      stormypos(315,90);
 			chrome.tabs.query({currentWindow: true, active: true}, 
 				//this function looks at the popup.html "respond to" textbox
 				//grabs the value and sends the message to context.js    
@@ -142,11 +189,22 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 					chrome.tabs.sendMessage(tabs[0].id, {action: "Sparky_Talk"}, function(res) {
 						console.log(res)
 					});
-					
+
 				})
+
 		}
 		else{
-			document.getElementById("mode-text").innerHTML = "Chill";
+			document.getElementById("mode-text").innerHTML = "Chill.";
+      stormypos(315,360);
 		}
+  }
+
+    toggle();
+	
+    function onclick(){
+        toggle();
+
+        chrome.storage.sync.set({ cBox: switchStatus.checked }, () => {
+        });
     }
-}, false)
+}

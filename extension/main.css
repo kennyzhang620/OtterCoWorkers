@@ -99,7 +99,7 @@ p {
 .stormy-image {
   position: absolute;
   top: 315px;
-  left: 90px;
+  left: 360px;
   transform: scale(0.5);
   transition: 1s;
 }

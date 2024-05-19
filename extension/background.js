@@ -159,4 +159,3 @@ function checkThreshold(sendResponse) {
 //     chrome.runtime.sendMessage({ action: 'updateBlacklist', blacklist });
 //   })
 //   .catch(error => console.error('Failed to fetch blacklist:', error));
-

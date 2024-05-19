@@ -1,4 +1,4 @@
-function animationSeq1() {
+function animationSeq1(str) {
     if (anilock) return;
     kx = 150;
     anilock = true;
@@ -14,7 +14,7 @@ function animationSeq1() {
           setSpriteAnimState("images/sparky_temp.gif")
           anilock = false;
 
-          animationSeq1_5("testing 1 2 3")
+          animationSeq1_5(str)
        }
     }
  }
@@ -75,8 +75,8 @@ function animSeq1_7() {
  }
 
 
-function SparkyBlueRunoutTalk() {
-   animationSeq1();
+function SparkyBlueRunoutTalk(str) {
+   animationSeq1(str);
 }
 
 function SparkyBlueRunAway() {

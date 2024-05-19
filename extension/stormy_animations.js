@@ -63,8 +63,20 @@ function animSeq3_7() {
     }
  }
 
- function freezeScroll() {
-   
+ function stopVideo(element) {
+   // getting every iframe from the body
+   var iframes = element.querySelectorAll('iframe');
+   // reinitializing the values of the src attribute of every iframe to stop the YouTube video.
+   for (let i = 0; i < iframes.length; i++) {
+      if (iframes[i] !== null) {
+         var temp = iframes[i].src;
+         iframes[i].src = temp;
+      }
+   }
+}
+
+ function freezeVideo() {
+   stopVideo(document.body);
  }
 
  function StormyFreezeScroll() {
@@ -74,6 +86,7 @@ function animSeq3_7() {
 
  function StormyStopBap() {
       animationSeq3_5();
+      freezeVideo();
  }
 
  function StormyRetreat() {
