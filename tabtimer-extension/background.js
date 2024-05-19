@@ -8,6 +8,7 @@ let alertThreshold = 0;
 let overtime = "false";
 let totalWhiteListTime = 0;
 let totalBlackListTime = 0;
+let totalActiveTime = 0
 blacklistedDomains=["www.youtube.com","www.y8.com"]
 
 chrome.runtime.onStartup.addListener(() => {
@@ -91,7 +92,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse({ elapsedTime });
     } else if (request.action === 'getWindowOpenTime') {
         let i=0;
-        let totalActiveTime = 0;
+        let animParameter=0;
+        totalActiveTime = 0;
         const currentTime = Date.now();
         for (let domain in domainTimes) {
             totalActiveTime += domainTimes[domain];
@@ -133,6 +135,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true; // Keep the message channel open for asynchronous sendResponse
 });
 
+
+
 function checkThreshold(sendResponse) {
     console.log("Checking threshold with alertThreshold:", alertThreshold);
     let overtime = '';
@@ -150,6 +154,7 @@ function checkThreshold(sendResponse) {
         function: getActiveDomainTime()
     });
 }
+
 
 // // Fetch and parse the blacklist file
 // fetch('blacklisted-domain.json')
