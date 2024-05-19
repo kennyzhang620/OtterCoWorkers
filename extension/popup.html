@@ -1,30 +1,41 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Tab Domains Viewer</title>
-  <link rel="stylesheet" type="text/css" href="styles.css">
-</head>
-<body>
-  <h1>Total white list time:</h1>
-  <p id="total-whitelist-time">-</p>
-  <h1>Total black list time:</h1>
-  <p id="total-blacklist-time">-</p>
-  <h1>Open Tab Domains</h1>
-  <ul id="domain-list"></ul>
-  <h2>Current Active Tab</h2>
-  <p id="active-tab-domain"></p>
-  <h2>Window Open Time</h2>
-  <p id="window-open-time">Loading...</p>
-  <h2>Active Domain Time</h2>
-  <p id="active-domain-time">Loading...</p>
-  <h2>Active Domain Percentage</h2>
-  <p id="active-domain-percentage">Loading...</p>
-  <h2>Alert Threshold (in minutes)</h2>
-  <input type="number" id="threshold-input" placeholder="Enter threshold" />
-  <button id="set-threshold-btn">Set Threshold</button>
-  <p id="current-threshold"></p>
-  <p id="check-threshold">Check Threshold: </p>
+<html lang="en">
 
-  <script src="popup.js"></script>
-</body>
+<!-- **** HEAD SECTION **** -->
+    <head>
+        <meta charset="UTF-8">
+        <title>Otter Co-Worker</title>
+        <link href="main.css" rel="stylesheet" type="text/css">
+    </head>
+<!-- **** HEAD SECTION ENDS **** -->
+    <body>
+        <header>
+            <div>
+                <h1>Otter Co-Worker</h1>
+            </div>
+        </header>
+        <main>
+            <div id="mode-wrapper">
+                <h3>Time to...</h3>
+                <h2 id="mode-text">Chill</h2>
+                <label class="switch">
+                    <input id="mode" type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div id="data-wrapper">
+                <div id="data-container">
+                    <p id="data-text">
+                        Sorry. No Data Found.
+                    </p>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <button id="button">Settings</button>
+            <img src="images/stormy_peek.png" class="stormy-image"
+            alt="Drawing of Stormy's head peeking.">
+        </footer>
+        <script src="popup.js" charset="utf-8"></script>
+    </body>
 </html>

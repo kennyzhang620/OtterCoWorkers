@@ -17,6 +17,10 @@ function updateAlertThreshold() {
                 }
             }
         });
+
+        chrome.runtime.sendMessage({ action: 'Sparky_Talk' }, (response) =>{
+            }
+        });
     });
 }
 
