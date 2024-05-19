@@ -8,7 +8,7 @@ let alertThreshold = 0;
 let overtime = "false";
 let totalWhiteListTime = 0;
 let totalBlackListTime = 0;
-blacklistedDomains=["9gag.com","www.9gag.com","Chatroulette.com","www.Chatroulette.com","Gizmodo.com","www.Gizmodo.com","TechCrunch.com","www.TechCrunch.com","aliexpress.com","www.aliexpress.com","bbc.com","www.bbc.com","bongacams.com","www.bongacams.com","buzzfeed.com","www.buzzfeed.com","cams.com","www.cams.com","camsoda.com","www.camsoda.com","cbs.com","www.cbs.com","chaturbate.com","www.chaturbate.com","cheezburger.com","www.cheezburger.com","cnbc.com","www.cnbc.com","cnet.com","www.cnet.com","cnn.com","www.cnn.com","craigslist.org","www.craigslist.org","deviantart.com","www.deviantart.com","edition.cnn.com","www.edition.cnn.com","www.youtube.com"]
+const blacklistedDomains=["9gag.com","www.9gag.com","Chatroulette.com","www.Chatroulette.com","Gizmodo.com","www.Gizmodo.com","TechCrunch.com","www.TechCrunch.com","aliexpress.com","www.aliexpress.com","bbc.com","www.bbc.com","bongacams.com","www.bongacams.com","buzzfeed.com","www.buzzfeed.com","cams.com","www.cams.com","camsoda.com","www.camsoda.com","cbs.com","www.cbs.com","chaturbate.com","www.chaturbate.com","cheezburger.com","www.cheezburger.com","cnbc.com","www.cnbc.com","cnet.com","www.cnet.com","cnn.com","www.cnn.com","craigslist.org","www.craigslist.org","deviantart.com","www.deviantart.com","edition.cnn.com","www.edition.cnn.com","www.youtube.com"]
 
 chrome.runtime.onStartup.addListener(() => {
     // Send a message to the popup to instruct it to close

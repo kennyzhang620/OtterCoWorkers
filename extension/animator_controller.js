@@ -62,10 +62,10 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
    switch (msg.action) {
       case "Sparky_Talk":
          SparkyBlueRunoutTalk(responseCust);
-         break;
+         //break;
       case "Sparky_Retreat":
          SparkyBlueRunAway();
-         break;
+         //break;
       case "Stormy_HoldOn":
          StormyFreezeScroll();
          break;
