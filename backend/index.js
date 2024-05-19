@@ -19,39 +19,6 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-function sendmail(addr) {
-	const nodemailer = require("nodemailer")
-
-	let transporter = nodemailer.createTransport({
-	    service: "gmail",
-	    auth:{
-	        user:"projectplantscan@gmail.com",
-	        pass:"doagmudeebbdyxnh",
-	    },
-	    tls:{
-	        rejectUnauthorized: false,
-	    }
-	})
-
-	let mailOptions = {
-	    from: "projectplantscan@gmail.com",
-	    //need to change to: email to be able to append email from src folder
-	    to: addr,
-	    subject:"Your CHATGPT Reply",
-	    //need to append text from the last line of the translator 
-	    text: resdata[resdata.length - 1],
-	}
-
-	transporter.sendMail(mailOptions, function(err, success){
-	    if(err){
-	        console.log(err)
-	    }
-	    else{
-	        console.log("email sent successfully!")
-	    }
-	})
-}
-
 const { Configuration, OpenAIApi } = require("openai");
 require('dotenv').config()
 
@@ -72,25 +39,12 @@ async function responseGenerator (input) {
     return completion.data.choices[0].text
 }
 
-app.post('/chatrecvm_2', async (req, res) => {
+app.post('/response', async (req, res) => {
 	let txt = req.body.textString
-	
-	console.log("Passthru: ", emotion, txt)
-    response = (await responseGenerator(txt, emotion))
-	var out = await translate(response);
-    console.log(out.data)
-	
-});
+    response = (await responseGenerator(txt))
 
-app.get('/addmail/:email', async (req, res) => {
-	email = req.params.email
-	sendmail(email)
-	console.log("Test!");
+	res.json(response)
 });
-
-app.get('/chatrecvm', (req,res) => {
-	res.json(resdata);
-})
 
 app.listen(PORT, () => {
     console.log(`Example app listening at http://localhost:${PORT}`)
