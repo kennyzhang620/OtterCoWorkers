@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    
   // Get the window open time
   chrome.runtime.sendMessage({ action: 'getWindowOpenTime' }, (response) => {
     if (response && response.elapsedTime !== undefined) {
@@ -34,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Please enter a valid number for the threshold.');
       }
   });
-
   // Get the active domain time
   chrome.runtime.sendMessage({ action: 'getActiveDomainTime' }, (response) => {
     if (response && response.elapsedTime !== undefined) {
@@ -66,6 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
   // Query all tabs in the current window
 // Query all tabs in the current window
 chrome.tabs.query({ currentWindow: true }, (tabs) => {
@@ -73,7 +74,13 @@ chrome.tabs.query({ currentWindow: true }, (tabs) => {
   
     // Get the total window open time
     chrome.runtime.sendMessage({ action: 'getWindowOpenTime' }, (windowResponse) => {
-      const windowTime = windowResponse.elapsedTime;
+       const windowTime = windowResponse.elapsedTime;
+      const totalBlackListTime = windowResponse.totalBlackListTime;
+      const totalWhiteListTime = windowResponse.totalWhiteListTime;
+      const blacklistTotalTimeElem = document.getElementById('total-blacklist-time');
+      const whitelistTotalTimeElem = document.getElementById('total-whitelist-time');
+      whitelistTotalTimeElem.textContent=(totalWhiteListTime*100)/windowTime;
+      blacklistTotalTimeElem.textContent=(totalBlackListTime*100)/windowTime;
   
       tabs.forEach(tab => {
         const url = new URL(tab.url);
@@ -107,4 +114,14 @@ chrome.tabs.query({ currentWindow: true }, (tabs) => {
       });
     });
   });
+
+});
+
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    // Check if the message is to close the popup
+    if (message.closePopup) {
+      // Close the popup
+      window.close();
+    }
   });

@@ -6,6 +6,14 @@ let activeDomainStartTime = Date.now();
 const domainTimes = {};
 let alertThreshold = 0;
 let overtime = "false";
+let totalWhiteListTime = 0;
+let totalBlackListTime = 0;
+blacklistedDomains=["www.youtube.com","www.y8.com"]
+
+chrome.runtime.onStartup.addListener(() => {
+    // Send a message to the popup to instruct it to close
+    chrome.runtime.sendMessage({ closePopup: true });
+  });
 
 // Retrieve alert threshold from storage
 chrome.storage.sync.get('alertThreshold', (data) => {
@@ -82,12 +90,30 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         domainTimes[domain] = currentTime;
         sendResponse({ elapsedTime });
     } else if (request.action === 'getWindowOpenTime') {
+        let i=0;
         let totalActiveTime = 0;
         const currentTime = Date.now();
         for (let domain in domainTimes) {
-            totalActiveTime += currentTime - domainTimes[domain];
+            totalActiveTime += domainTimes[domain];
+            if(i==0){
+                totalBlackListTime = 0;
+                totalWhiteListTime = 0
+            }
+            
+            // Check if the domain is in the blacklist
+            const isBlacklisted = blacklistedDomains.some(blacklistedDomain => domain.includes(blacklistedDomain));
+            
+            if (isBlacklisted) {
+                totalBlackListTime += domainTimes[domain];
+            } else {
+                totalWhiteListTime += domainTimes[domain];
+            }
+            i+=1;
         }
-        sendResponse({ elapsedTime: totalActiveTime });
+        sendResponse({ elapsedTime: totalActiveTime,
+            totalBlackListTime: totalBlackListTime,
+            totalWhiteListTime:totalWhiteListTime 
+        });
     } else if (request.action === 'setThreshold') {
         alertThreshold = request.threshold * 1000; // Threshold is in seconds
         console.log("alertThreshold updated to:", alertThreshold);
@@ -124,3 +150,13 @@ function checkThreshold(sendResponse) {
         function: getActiveDomainTime()
     });
 }
+
+// // Fetch and parse the blacklist file
+// fetch('blacklisted-domain.json')
+//   .then(response => response.json())
+//   .then(blacklist => {
+//     // Send the blacklist data to the popup
+//     chrome.runtime.sendMessage({ action: 'updateBlacklist', blacklist });
+//   })
+//   .catch(error => console.error('Failed to fetch blacklist:', error));
+

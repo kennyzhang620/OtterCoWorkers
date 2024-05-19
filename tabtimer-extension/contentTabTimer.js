@@ -1,5 +1,5 @@
 let alertThreshold = 0;
-let interval=100;
+let interval=10000;
 
 // Function to retrieve alert threshold from storage and update alertThreshold
 function updateAlertThreshold() {
@@ -13,7 +13,7 @@ function updateAlertThreshold() {
                 const elapsedTime = response.elapsedTime;
                 if(elapsedTime > alertThreshold)
                 {
-                    alert("bing bong motherfucker");
+                    alert("bing bong motherfker");
                 }
             }
         });
