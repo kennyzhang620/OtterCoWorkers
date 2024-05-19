@@ -3,26 +3,60 @@ let activeDomainStartTime = Date.now();
 const domainTimes = {};
 let alertThreshold = 0;
 
-// chrome.storage.sync.get('alertThreshold', (data) => {
-//   const alertThresholdSeconds = data.alertThreshold || 0;
-
-//   chrome.tabs.onActivated.addListener(activeInfo => {
-//     // Your existing code to track active domain and update domain times
-//   });
-
-//   chrome.windows.onFocusChanged.addListener(windowId => {
-//     // Your existing code to track active domain and update domain times
-//   });
-
-//   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-//     // Your existing message listener code
-    
-//     // Check if domain time exceeds threshold and trigger alert
-//     if (alertThresholdSeconds > 0 && elapsedTime > alertThresholdSeconds * 1000) {
-//       alert(`You have spent more than ${alertThresholdSeconds} seconds on ${domain}!`);
-//     }
-//   });
-// });
+chrome.storage.sync.get('alertThreshold', (data) => {
+    alertThreshold = data.alertThreshold || 0; // Set alertThreshold here
+  
+    chrome.tabs.onActivated.addListener(activeInfo => {
+        chrome.tabs.get(activeInfo.tabId, tab => {
+            const newDomain = new URL(tab.url).hostname;
+            updateActiveDomain(newDomain);
+        });
+    });
+  
+    chrome.windows.onFocusChanged.addListener(windowId => {
+        if (windowId === chrome.windows.WINDOW_ID_NONE) {
+            updateActiveDomain('');
+        } else {
+            chrome.windows.get(windowId, { populate: true }, window => {
+                const activeTab = window.tabs.find(tab => tab.active);
+                if (activeTab) {
+                    const newDomain = new URL(activeTab.url).hostname;
+                    updateActiveDomain(newDomain);
+                }
+            });
+        }
+    });
+  
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+        if (request.action === 'getActiveDomainTime') {
+            sendResponse({
+                domain: activeDomain,
+                elapsedTime: getActiveDomainTime()
+            });
+        } else if (request.action === 'getDomainTime') {
+            const domain = request.domain;
+            const elapsedTime = domainTimes[domain] || 0;
+            sendResponse({ elapsedTime });
+        } else if (request.action === 'updateDomainTime') {
+            const domain = request.domain;
+            const currentTime = Date.now();
+            const lastActiveTime = domainTimes[domain] || currentTime; // If domain was not active before, set lastActiveTime as currentTime
+            const elapsedTime = currentTime - lastActiveTime;
+            domainTimes[domain] = currentTime;
+            sendResponse({ elapsedTime });
+        } else if (request.action === 'getWindowOpenTime') {
+            let totalActiveTime = 0;
+            const currentTime = Date.now();
+            for (let domain in domainTimes) {
+                totalActiveTime += currentTime - domainTimes[domain];
+            }
+            sendResponse({ elapsedTime: totalActiveTime });
+        } else if (request.action === 'setThreshold') {
+            alertThreshold = request.threshold * 60 * 1000; // Convert minutes to milliseconds
+        }
+        return true; // Keep the message channel open for asynchronous sendResponse
+    });
+});
 
 
 function updateActiveDomain(newDomain) {
@@ -92,7 +126,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       }
       sendResponse({ elapsedTime: totalActiveTime });
     } else if (request.action === 'setThreshold') {
-        alertThreshold = request.threshold * 60 * 1000; // Convert minutes to milliseconds
+        alertThreshold = request.threshold * 1000; // Convert minutes to milliseconds
     }
     return true; // Keep the message channel open for asynchronous sendResponse
 });

@@ -3,7 +3,10 @@
     "name": "Tab Domains Viewer",
     "version": "1.0",
     "description": "Displays stats of tab domains.",
-    "permissions": ["tabs"],
+    "permissions": [
+        "tabs",
+        "storage"
+    ],
     "action": {
       "default_popup": "popup.html",
       "default_icon": {
