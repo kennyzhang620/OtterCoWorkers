@@ -13,7 +13,7 @@ window.addEventListener("mousewheel", (event) => {
 });
 
 
-var responseCust = "Well its time to start working!"
+var responseCust = "Okay, let's get to work! I'll be here to make sure you're staying on task. Don't forget to take breaks once in a while and stay hydrated!"
 
 function senddata(txt, callback) {
    var txtFile = new XMLHttpRequest();
@@ -52,7 +52,7 @@ function cb(data) {
       console.log(responseCust)
 }
 
-senddata("You are a tsundere. Tell them to get off the computer!", cb)
+senddata("Don't be such a tsundere. Tell them to get off the computer!", cb)
 
 
 var s = false
