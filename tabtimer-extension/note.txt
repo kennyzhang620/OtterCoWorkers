@@ -1,2 +1,3 @@
 Extension doesn't update when opened
 
+Need to fix window time to make it a sum of all other tabs, it's messed up rn
