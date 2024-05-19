@@ -1,5 +1,6 @@
 var animElement = null;
 var animImg = null;
+var animText = null
 var kx = 0; ky = 0; 
 var anilock = false
 
@@ -31,10 +32,12 @@ function appendElement(classL, htmlL) {
  }
  
  function initAnimator() {
-    appendElement(document.getElementsByTagName("header")[0], SpriteElement(0,0))
+    appendElement(document.body, SpriteElement(0,0))
     animElement = document.getElementById("anim_spr");
     animImg = document.getElementById("anim_img");
+    animText = document.getElementById("textbox");
     setSprite(-80, -80, 1, 1);
+    hideText();
 
     console.log("Animator set!")
  }
@@ -44,6 +47,19 @@ function appendElement(classL, htmlL) {
  
        animElement.style.left = `${x}vw`;
        animElement.style.top = `${y}vh`;
+       animElement.style.right = `auto`;
+       animElement.style.bottom = `auto`;
+       animElement.style.transform = `scale(${scaleX}, ${scaleY})`;
+    }
+ }
+
+ function setSprite_Rv(x,y, scaleX, scaleY) {
+    if (animElement != null) {
+ 
+       animElement.style.right = `${x}vw`;
+       animElement.style.bottom = `${y}vh`;
+       animElement.style.left = `auto`;
+       animElement.style.top = `auto`;
        animElement.style.transform = `scale(${scaleX}, ${scaleY})`;
     }
  }
@@ -53,5 +69,14 @@ function appendElement(classL, htmlL) {
     if (animElement != null && animImg != null) {
        animImg.src = imgp;
     }
+ }
+
+ function displayText(str) {
+    animText.style.display = "block";
+    animText.innerHTML = str
+ }
+
+ function hideText() {
+    animText.style.display = "none";
  }
  
