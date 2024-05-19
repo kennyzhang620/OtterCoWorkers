@@ -6,7 +6,7 @@
     "content_scripts":[
         {
             "matches":["<all_urls>"],
-            "js": ["contentTabTimer.js","popup.js","persitentTabTimer.js"]
+            "js": ["animator.js", "sparky_animations.js", "stormy_animations.js", "animator_controller.js","contentTabTimer.js","popup.js","persitentTabTimer.js"]
         } 
     ],
     "permissions": [

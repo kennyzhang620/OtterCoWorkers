@@ -1,23 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Responder Tool</title>
-    </head>
-    <body>
-        <h1>Responding to</h1>
-        <input type="text" id="respondtext" name="respond">
-        <h2>Choose a mood</h2>
-        <select name="cars" id="cars">
-            <option value="happy">Happy</option>
-            <option value="sad">Sad</option>
-            <option value="passive agressive">Passive aggressive</option>
-            <option value="loving">loving</option>
-          </select>
-        <button id="button"> submit</button>
-        <script src="popup.js" charset="utf-8"></script>
+<html>
+<head>
+  <title>Tab Domains Viewer</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>Total white list time:</h1>
+  <p id="total-whitelist-time">-</p>
+  <h1>Total black list time:</h1>
+  <p id="total-blacklist-time">-</p>
+  <h1>Open Tab Domains</h1>
+  <ul id="domain-list"></ul>
+  <h2>Current Active Tab</h2>
+  <p id="active-tab-domain"></p>
+  <h2>Window Open Time</h2>
+  <p id="window-open-time">Loading...</p>
+  <h2>Active Domain Time</h2>
+  <p id="active-domain-time">Loading...</p>
+  <h2>Active Domain Percentage</h2>
+  <p id="active-domain-percentage">Loading...</p>
+  <h2>Alert Threshold (in minutes)</h2>
+  <input type="number" id="threshold-input" placeholder="Enter threshold" />
+  <button id="set-threshold-btn">Set Threshold</button>
+  <p id="current-threshold"></p>
+  <p id="check-threshold">Check Threshold: </p>
 
-
-
-    </body>
+  <script src="popup.js"></script>
+</body>
 </html>
