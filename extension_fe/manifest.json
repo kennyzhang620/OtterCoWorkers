@@ -5,7 +5,7 @@
     "content_scripts":[
         {
             "matches":["<all_urls>"],
-            "js": ["content.js"]
+            "js": ["animator.js", "sparky_animations.js", "stormy_animations.js", "content.js"]
         } 
     ],
     "action":{
