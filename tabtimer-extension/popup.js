@@ -13,6 +13,22 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       console.error('Failed to retrieve window open time.');
     }
+    chrome.storage.sync.get('alertThreshold', (data) => {
+        const currentThresholdElem = document.getElementById('current-threshold');
+        currentThresholdElem.textContent += `${data.alertThreshold || 0} minutes`;
+      });
+  });
+
+  document.getElementById('set-threshold-btn').addEventListener('click', () => {
+    const thresholdInput = document.getElementById('threshold-input');
+    const threshold = parseInt(thresholdInput.value, 10); // Convert to integer
+
+    if (!isNaN(threshold)) {
+      // Send threshold value to background script
+      chrome.runtime.sendMessage({ action: 'setThreshold', threshold });
+    } else {
+      alert('Please enter a valid number for the threshold.');
+    }
   });
 
   // Get the active domain time
