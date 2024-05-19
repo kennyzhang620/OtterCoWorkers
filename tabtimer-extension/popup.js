@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     chrome.storage.sync.get('alertThreshold', (data) => {
         const currentThresholdElem = document.getElementById('current-threshold');
-        currentThresholdElem.textContent += `${data.alertThreshold || 0} minutes`;
+        currentThresholdElem.textContent += `${data.alertThreshold || 0} seconds`;
       });
   });
 
@@ -26,9 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!isNaN(threshold)) {
         // Save threshold value to storage
         chrome.storage.sync.set({ alertThreshold: threshold }, () => {
-          // Update displayed threshold after saving
+          // Update displayed threshold after savingf
           const currentThresholdElem = document.getElementById('current-threshold');
-          currentThresholdElem.textContent = `Current Threshold: ${threshold} minutes`;
+          currentThresholdElem.textContent = `Current Threshold: ${threshold} seconds`;
         });
       } else {
         alert('Please enter a valid number for the threshold.');
@@ -46,10 +46,25 @@ document.addEventListener('DOMContentLoaded', () => {
       const timeString = `${hours}h ${minutes}m ${seconds}s`;
       const activeDomainTimeElem = document.getElementById('active-domain-time');
       activeDomainTimeElem.textContent = `Domain: ${response.domain}, Time: ${timeString}`;
+      console.log("getactivedomaintime");
     } else {
       console.error('Failed to retrieve active domain time.');
     }
   });
+
+  chrome.runtime.sendMessage({ action: 'checkThreshold' }, (response) => {
+
+    chrome.storage.sync.get('alertThreshold', (data) => {
+
+        const current = response.current;
+        const limit = response.limit;
+        const funct = response.function;
+        let checkThresholdElem = document.getElementById('check-threshold');
+        checkThresholdElem.textContent = "overtime: " + current + "\nThreshold: " + limit + "\nfunct: " + funct + "\neval:" + (funct>limit);
+        console.log("checkthres");
+    });    
+});
+
 
   // Query all tabs in the current window
 // Query all tabs in the current window
@@ -78,6 +93,13 @@ chrome.tabs.query({ currentWindow: true }, (tabs) => {
             const li = document.createElement('li');
             li.textContent = `${domain} - ${timeString}`;
             domainList.appendChild(li);
+
+            // chrome.runtime.sendMessage({ action: 'checkThreshold', domain }, (domainResponse) => {
+            //     const alertmsg = domainResponse.overtime;
+            //     const checkThresholdElem = document.getElementById('check-threshold');
+            //     checkThresholdElem.textContent = alertmsg;
+            // })
+            
           } else {
             console.error(`Failed to retrieve time for domain ${domain}.`);
           }
@@ -85,5 +107,4 @@ chrome.tabs.query({ currentWindow: true }, (tabs) => {
       });
     });
   });
-  
-});
+  });

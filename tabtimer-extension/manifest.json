@@ -3,6 +3,12 @@
     "name": "Tab Domains Viewer",
     "version": "1.0",
     "description": "Displays stats of tab domains.",
+    "content_scripts":[
+        {
+            "matches":["<all_urls>"],
+            "js": ["contentTabTimer.js","popup.js","persitentTabTimer.js"]
+        } 
+    ],
     "permissions": [
         "tabs",
         "storage"

@@ -5,10 +5,16 @@ let activeDomain = '';
 let activeDomainStartTime = Date.now();
 const domainTimes = {};
 let alertThreshold = 0;
+let overtime = "false";
 
 // Retrieve alert threshold from storage
 chrome.storage.sync.get('alertThreshold', (data) => {
-    alertThreshold = data.alertThreshold || 0;
+    if (data.alertThreshold) {
+        alertThreshold = data.alertThreshold * 1000; // Assuming alertThreshold is in seconds
+        console.log("Initial alertThreshold set to:", alertThreshold);
+    } else {
+        console.log("No alertThreshold found in storage, using default value of 0");
+    }
 });
 
 // Function to update the active domain and track domain times
@@ -25,11 +31,6 @@ function updateActiveDomain(newDomain) {
 
     activeDomain = newDomain;
     activeDomainStartTime = currentTime;
-
-    // Check if domain time exceeds threshold and trigger alert
-    if (alertThreshold > 0 && getActiveDomainTime() > alertThreshold) {
-        alert(`You have spent more than ${alertThreshold} seconds on ${activeDomain}!`);
-    }
 }
 
 // Function to get the active domain time
@@ -88,7 +89,38 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         }
         sendResponse({ elapsedTime: totalActiveTime });
     } else if (request.action === 'setThreshold') {
-        alertThreshold = request.threshold; // Threshold is already in seconds
+        alertThreshold = request.threshold * 1000; // Threshold is in seconds
+        console.log("alertThreshold updated to:", alertThreshold);
+    } else if (request.action === 'checkThreshold') {
+        // If alertThreshold is 0, fetch from storage, else use the existing value
+        if (alertThreshold === 0) {
+            chrome.storage.sync.get('alertThreshold', (data) => {
+                if (data.alertThreshold) {
+                    alertThreshold = data.alertThreshold * 1000; // Assuming alertThreshold is in seconds
+                }
+                checkThreshold(sendResponse);
+            });
+        } else {
+            checkThreshold(sendResponse);
+        }
     }
     return true; // Keep the message channel open for asynchronous sendResponse
 });
+
+function checkThreshold(sendResponse) {
+    console.log("Checking threshold with alertThreshold:", alertThreshold);
+    let overtime = '';
+
+    if (alertThreshold > 0 && getActiveDomainTime() > alertThreshold) {
+        overtime = true;
+    } else {
+        overtime = false;
+    }
+
+    // Send the response back to the popup script
+    sendResponse({
+        current: overtime,
+        limit: alertThreshold,
+        function: getActiveDomainTime()
+    });
+}
