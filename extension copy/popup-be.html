@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tab Domains Viewer</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>Total white list time:</h1>
+  <p id="total-whitelist-time">-</p>
+  <h1>Total black list time:</h1>
+  <p id="total-blacklist-time">-</p>
+  <h1>Open Tab Domains</h1>
+  <ul id="data-text"></ul>
+  <h2>Current Active Tab</h2>
+  <p id="active-tab-domain"></p>
+  <h2>Window Open Time</h2>
+  <p id="window-open-time">Loading...</p>
+  <h2>Active Domain Time</h2>
+  <p id="active-domain-time">Loading...</p>
+  <h2>Active Domain Percentage</h2>
+  <p id="active-domain-percentage">Loading...</p>
+  <h2>Alert Threshold (in minutes)</h2>
+  <input type="number" id="threshold-input" placeholder="Enter threshold" />
+  <button id="set-threshold-btn">Set Threshold</button>
+  <p id="current-threshold"></p>
+  <p id="check-threshold">Check Threshold: </p>
+
+  <script src="popup.js"></script>
+</body>
+</html>

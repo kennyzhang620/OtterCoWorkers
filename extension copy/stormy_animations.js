@@ -71,6 +71,7 @@ function animSeq3_7() {
       if (iframes[i] !== null) {
          var temp = iframes[i].src;
          iframes[i].src = temp;
+         console.log("<-->");
       }
    }
 }
