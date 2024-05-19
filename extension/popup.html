@@ -26,15 +26,28 @@
             </div>
             <div id="data-wrapper">
                 <div id="data-container">
+                    <div class="container">
+                        <div class="percentage-column">
+                            <p class="percentage-text">FOCUS METER:</p>
+                            <p id="total-whitelist-time">-</p>
+                        </div>
+                        <div class="percentage-column">
+                            <p class="percentage-text">DISTRACTED:</p> 
+                            <p id="total-blacklist-time">-</p>
+                        </div>
+                    </div>
+                    <div class="container">
+                            <div class="percentage-column" id="white-percentage">
+                            </div>
+                            <div class="percentage-column" id="black-percentage">
+                            </div>
+                        </div>
                     <p id="data-text">
-                        <h3>Total white list time:</h3>
-                        <p id="total-whitelist-time">-</p>
-                        <h3>Total black list time:</h3>
-                        <p id="total-blacklist-time">-</p>
+                        
                         <h3>Open Tab Domains</h3>
                         <ul id="domain-list"></ul>
-                        <h4>Current Active Tab</h4>
-                        <p id="active-tab-domain"></p>
+                        <!-- <h4>Current Active Tab</h4>
+                        <p id="active-tab-domain"></p> -->
                         <h4>Window Open Time</h4>
                         <p id="window-open-time">Loading...</p>
                         <h4>Active Domain Time</h4>

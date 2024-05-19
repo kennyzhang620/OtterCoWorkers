@@ -115,8 +115,10 @@ chrome.tabs.query({ currentWindow: true }, (tabs) => {
       const totalWhiteListTime = windowResponse.totalWhiteListTime;
       const blacklistTotalTimeElem = document.getElementById('total-blacklist-time');
       const whitelistTotalTimeElem = document.getElementById('total-whitelist-time');
-      whitelistTotalTimeElem.textContent=(totalWhiteListTime*100)/windowTime;
-      blacklistTotalTimeElem.textContent=(totalBlackListTime*100)/windowTime;
+      whitelistTotalTimeElem.textContent = Math.floor((totalWhiteListTime * 100) / windowTime);
+      blacklistTotalTimeElem.textContent=Math.floor((totalBlackListTime*100)/windowTime);
+      document.getElementById('white-percentage').style.width = Math.floor((totalWhiteListTime * 100) / windowTime) + '%';
+      document.getElementById('black-percentage').style.width = Math.floor((totalBlackListTime*100)/windowTime) + '%';
   
       tabs.forEach(tab => {
         const url = new URL(tab.url);

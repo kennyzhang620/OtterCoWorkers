@@ -1,5 +1,5 @@
 let alertThreshold = 50;
-let interval=500;
+let interval=1;
 
 var vi = false
 
@@ -8,6 +8,9 @@ function updateAlertThreshold() {
     chrome.storage.sync.get('alertThreshold', (data) => {
         if (data.alertThreshold) {
             alertThreshold = data.alertThreshold; // Assuming alertThreshold is in seconds
+        }
+        else{
+            alertThreshold = 50;
         }
         console.log("Alert Threshold updated:", alertThreshold);
         chrome.runtime.sendMessage({ action: 'getWindowOpenTime' }, (windowResponse) =>{
@@ -21,7 +24,7 @@ function updateAlertThreshold() {
                 {
                    // alert("bing bong back to work motherfker");
                     if (!vi) {
-                        if (Math.random() > 0.5) {
+                        if (Math.random() > 0.5 && false) {
                             StormyFreezeScroll();
                         }
                         else {
