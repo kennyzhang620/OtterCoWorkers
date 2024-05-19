@@ -1,53 +1,30 @@
-function senddata(emo,txt) {
-	var txtFile = new XMLHttpRequest();
-	    txtFile.open("POST", "http://localhost:5010/chatrecvm");
+let alertThreshold = 50;
+let interval=500;
 
-	    txtFile.setRequestHeader("Accept", "application/json");
-	    txtFile.setRequestHeader("Content-Type", "application/json");
+// Function to retrieve alert threshold from storage and update alertThreshold
+function updateAlertThreshold() {
+    chrome.storage.sync.get('alertThreshold', (data) => {
+        if (data.alertThreshold) {
+            alertThreshold = data.alertThreshold * 1000; // Assuming alertThreshold is in seconds
+        }
+        console.log("Alert Threshold updated:", alertThreshold);
+        chrome.runtime.sendMessage({ action: 'getWindowOpenTime' }, (windowResponse) =>{
+            const windowTime = windowResponse.elapsedTime;
+            const totalBlackListTime = windowResponse.totalBlackListTime;
+            const totalWhiteListTime = windowResponse.totalWhiteListTime;
+            const totalWhiteListPercentage=(totalWhiteListTime*100)/windowTime;
+            const totalBlackListPercentage=(totalBlackListTime*100)/windowTime;
 
-	    let image_encoded = `{
-	     "emotion": "${emo}",
-		 "textString": "${txt}"
-	    }`;
-	    txtFile.onload = function (e) {
-	        if (txtFile.readyState === 4) {
-	            if (txtFile.status === 200) {
-	                var csvData = txtFile.responseText;
-
-	                console.log(csvData, "Response");
-
-
-	            }
-	            else {
-	                console.log("error:", txtFile.statusText);
-	            }
-	        }
-	    };
-
-	    txtFile.onerror = function (e) {
-	        console.log("error: ", txtFile.statusText);
-	    };
-
-	    txtFile.send(image_encoded);
+                if(totalWhiteListPercentage < alertThreshold)
+                {
+                    alert("bing bong back to work motherfker");
+                }
+        });
+    });
 }
 
-document.addEventListener('DOMContentLoaded', function(){
-    //when the user clicks the submit button in the popup.html
-    document.getElementById('button').addEventListener('click', onclick, false)
-    function onclick(){
-       
-        //chrome.runtime.sendMessage()
-        
-        //the function onlick is called we look at the tab that is currently open
-        chrome.tabs.query({currentWindow: true, active: true}, 
-        //this function looks at the popup.html "respond to" textbox
-        //grabs the value and sends the message to context.js    
-        function(tabs){
-			
-            chrome.tabs.sendMessage(tabs[0].id, {command: "move"}, function(res) {
-				console.log(res)
-			});
-			
-        })
-    }
-}, false)
+
+
+// Run the function initially and then set it to run repeatedly every X milliseconds
+updateAlertThreshold();
+setInterval(updateAlertThreshold, interval); // Run every 60 seconds (adjust as needed)

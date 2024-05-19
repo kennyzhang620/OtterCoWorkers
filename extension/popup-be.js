@@ -125,3 +125,28 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       window.close();
     }
   });
+
+  document.addEventListener('DOMContentLoaded', function(){
+    //when the user clicks the submit button in the popup.html
+    document.getElementById('mode').addEventListener('click', onclick, false)
+    function onclick(){
+		const switchStatus = document.getElementById('mode');
+        //chrome.runtime.sendMessage()
+        if(switchStatus.checked){
+			document.getElementById("mode-text").innerHTML = "Work";
+			chrome.tabs.query({currentWindow: true, active: true}, 
+				//this function looks at the popup.html "respond to" textbox
+				//grabs the value and sends the message to context.js    
+				function(tabs){
+					
+					chrome.tabs.sendMessage(tabs[0].id, {action: "Sparky_Talk"}, function(res) {
+						console.log(res)
+					});
+					
+				})
+		}
+		else{
+			document.getElementById("mode-text").innerHTML = "Chill";
+		}
+    }
+}, false)
