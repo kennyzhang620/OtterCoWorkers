@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chrome.storage.sync.set({ alertThreshold: threshold }, () => {
           // Update displayed threshold after savingf
           const currentThresholdElem = document.getElementById('current-threshold');
-          currentThresholdElem.textContent = `Current Threshold: ${threshold} seconds`;
+          currentThresholdElem.textContent = `Current Threshold: ${threshold} %`;
         });
       } else {
         alert('Please enter a valid number for the threshold.');
@@ -175,7 +175,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 		cBox = data.cBox
     switchStatus.checked = cBox
     console.log(cBox)
-	});
+    if(cBox == true){
+      //work
+      document.getElementById("mode-text").innerHTML = "Work!";
+    }
+    else{
+      //chill
+      document.getElementById("mode-text").innerHTML = "Chill!";
+    }
+  });
 
 
   function toggle() {
@@ -209,4 +217,32 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         chrome.storage.sync.set({ cBox: switchStatus.checked }, () => {
         });
     }
+}
+
+function updateModeText(){
+  chrome.storage.sync.get('cBox', (data) => {
+		cBox = data.cBox
+    switchStatus.checked = cBox
+    console.log(cBox)
+    if(switchStatus.checked){
+			document.getElementById("mode-text").innerHTML = "Work!";
+      stormypos(315,90);
+			chrome.tabs.query({currentWindow: true, active: true}, 
+				//this function looks at the popup.html "respond to" textbox
+				//grabs the value and sends the message to context.js    
+				function(tabs){
+					
+					chrome.tabs.sendMessage(tabs[0].id, {action: "Sparky_Talk"}, function(res) {
+						console.log(res)
+					});
+
+				})
+
+		}
+		else{
+			document.getElementById("mode-text").innerHTML = "Chill.";
+      stormypos(315,360);
+		}
+
+	});
 }
