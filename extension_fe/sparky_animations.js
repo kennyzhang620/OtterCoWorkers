@@ -5,7 +5,7 @@ function animationSeq3() {
     setSpriteAnimState("images/sparky_run_transparent.gif")
  
     function animator1() {
-       setSprite(kx++, 30, -1, 1);
+       setSprite(kx++, 10, -1, 1);
     
        if (kx > 40) {
           clearInterval(testAnim);
@@ -22,7 +22,7 @@ function animationSeq3() {
     setSpriteAnimState("images/sparky_run_transparent.gif")
     
     function animator2() {
-       setSprite(kx--, 30, 1, 1);
+       setSprite(kx--, 10, 1, 1);
     
        if (kx <= 0) { 
           clearInterval(testAnim);
