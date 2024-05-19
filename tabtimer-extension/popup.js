@@ -24,11 +24,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const threshold = parseInt(thresholdInput.value, 10); // Convert to integer
 
     if (!isNaN(threshold)) {
-      // Send threshold value to background script
-      chrome.runtime.sendMessage({ action: 'setThreshold', threshold });
-    } else {
-      alert('Please enter a valid number for the threshold.');
-    }
+        // Save threshold value to storage
+        chrome.storage.sync.set({ alertThreshold: threshold }, () => {
+          // Update displayed threshold after saving
+          const currentThresholdElem = document.getElementById('current-threshold');
+          currentThresholdElem.textContent = `Current Threshold: ${threshold} minutes`;
+        });
+      } else {
+        alert('Please enter a valid number for the threshold.');
+      }
   });
 
   // Get the active domain time
