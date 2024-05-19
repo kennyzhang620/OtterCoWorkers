@@ -32,28 +32,38 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Query all tabs in the current window
-  chrome.tabs.query({ currentWindow: true }, (tabs) => {
+// Query all tabs in the current window
+chrome.tabs.query({ currentWindow: true }, (tabs) => {
     const domainList = document.getElementById('domain-list');
-    tabs.forEach(tab => {
-      const url = new URL(tab.url);
-      const domain = url.hostname;
-
-      // Get the time spent on this domain
-      chrome.runtime.sendMessage({ action: 'getDomainTime', domain }, (response) => {
-        if (response && response.elapsedTime !== undefined) {
-          const elapsedTime = response.elapsedTime;
-          const seconds = Math.floor((elapsedTime / 1000) % 60);
-          const minutes = Math.floor((elapsedTime / (1000 * 60)) % 60);
-          const hours = Math.floor((elapsedTime / (1000 * 60 * 60)) % 24);
-
-          const timeString = `${hours}h ${minutes}m ${seconds}s`;
-          const li = document.createElement('li');
-          li.textContent = `${domain} - ${timeString}`;
-          domainList.appendChild(li);
-        } else {
-          console.error(`Failed to retrieve time for domain ${domain}.`);
-        }
+  
+    // Get the total window open time
+    chrome.runtime.sendMessage({ action: 'getWindowOpenTime' }, (windowResponse) => {
+      const windowTime = windowResponse.elapsedTime;
+  
+      tabs.forEach(tab => {
+        const url = new URL(tab.url);
+        const domain = url.hostname;
+  
+        // Get the time spent on this domain
+        chrome.runtime.sendMessage({ action: 'getDomainTime', domain }, (domainResponse) => {
+          if (domainResponse && domainResponse.elapsedTime !== undefined) {
+            const elapsedTime = domainResponse.elapsedTime;
+            const percentage = (elapsedTime / windowTime) * 100;
+  
+            const seconds = Math.floor((elapsedTime / 1000) % 60);
+            const minutes = Math.floor((elapsedTime / (1000 * 60)) % 60);
+            const hours = Math.floor((elapsedTime / (1000 * 60 * 60)) % 24);
+  
+            const timeString = `${hours}h ${minutes}m ${seconds}s | ${percentage.toFixed(0)}%`;
+            const li = document.createElement('li');
+            li.textContent = `${domain} - ${timeString}`;
+            domainList.appendChild(li);
+          } else {
+            console.error(`Failed to retrieve time for domain ${domain}.`);
+          }
+        });
       });
     });
   });
+  
 });

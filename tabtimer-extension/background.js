@@ -70,12 +70,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'getWindowOpenTime') {
         const currentTime = Date.now();
         const elapsedTime = currentTime - windowOpenTime;
-        console.log("currentTime:");
-        console.log(currentTime);
-        console.log("windowOpenTime");
-        console.log(windowOpenTime);
-        console.log("elapsedTime");
-        console.log(elapsedTime);
         sendResponse({
             elapsedTime
         });
